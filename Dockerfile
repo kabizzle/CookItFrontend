@@ -12,13 +12,16 @@ FROM node:alpine3.18 as build
 WORKDIR /app
 COPY package.json .
 RUN npm install
+RUN npm i-g serve
 COPY . .
 RUN npm run build
+EXPOSE 3000
+CMD [ "serve", "-s", "dist" ]
 
 # Serve with Nginx
-FROM nginx:1.23-alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf *
-COPY --from=build /app/dist .
-EXPOSE 80
-CMD [ "nginx", "-g", "daemon off;" ]
+# FROM nginx
+# WORKDIR /usr/share/nginx/html
+# RUN rm -rf *
+# COPY --from=dist /app/dist .
+# EXPOSE 80
+# CMD [ "nginx", "-g", "daemon off;" ]
