@@ -11,23 +11,31 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { CREATE_FOLDER } from "@/graphql/mutations";
-import { AUTH_USER } from "@/graphql/queries";
 
 // Define TypeScript types for mutation variables and response
+interface CreateFolderVariables {
+  name: string;
+}
+
+interface CreateFolderResponse {
+  createFolder: {
+    id: string;
+    name: string;
+  };
+}
 
 // Component definition
 const AddFolder: React.FC = () => {
-  const resultUser = useQuery(AUTH_USER);
-  const userId = resultUser.data?.me.id;
-  const [folderData, setFolderData] = useState({
-    name: "",
-  });
-  //add variable user Id so it saved the user that created the folder
+  const [folderData, setFolderData] = useState<CreateFolderVariables>({ name: "" });
 
-  console.log(userId)
-  const [addFolder, { loading, error }] = useMutation(CREATE_FOLDER);
+  //add variabled user Id so it saved the user that created the folder 
+
+  const [addFolder, { loading, error }] = useMutation<
+    CreateFolderResponse,
+    CreateFolderVariables
+  >(CREATE_FOLDER);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -39,14 +47,8 @@ const AddFolder: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-  
-    if (!userId) {
-      alert("User not authenticated!");
-      return;
-    }
-  
     try {
-      await addFolder({ variables: { name: folderData.name, userId } });
+      await addFolder({ variables: { ...folderData } });
       alert("Folder created successfully!");
       setFolderData({ name: "" }); // Clear input after success
     } catch (err) {
@@ -54,7 +56,6 @@ const AddFolder: React.FC = () => {
       alert("An error occurred while creating the folder.");
     }
   };
-  
 
   return (
     <Dialog>

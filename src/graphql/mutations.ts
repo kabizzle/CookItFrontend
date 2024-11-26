@@ -61,11 +61,10 @@ import { gql } from '@apollo/client';
 // `
 
 export const CREATE_FOLDER = gql`
-  mutation CreateRecipe($name: String!, $userId: ID!) {
-    createFolder(name: $name, userId: $userId) {
+  mutation CreateFolder($name: String!) {
+    createFolder(name: $name) {
       id
       name
-      usersId
     }
   }
 `;
@@ -85,17 +84,21 @@ export const CREATE_FOLDER = gql`
 
 //BUG HERE TO FIX
 export const CREATE_RECIPE = gql`
-  mutation CreateRecipe($name: String!, $description: String!, $createdBy: ID!, $ingredients: [String], $preparation: String, $images: [String], $tags: [String]) {
-    createRecipe(name: $name, description: $description, createdBy: $createdBy, ingredients: $ingredients, preparation: $preparation, images: $images, tags: $tags) {
+  mutation CreateRecipe(
+    $name: String!
+    $description: String!
+    $ingredients: [String]!
+    $preparation: String!
+    $tags: [String]!
+  ) {
+    createRecipe(
+      name: $name
+      description: $description
+      ingredients: $ingredients
+      preparation: $preparation
+      tags: $tags
+    ) {
       name
-      description
-      ingredients
-      preparation
-      images
-      tags
-      createdBy
-      createdOn
-      id
     }
   }
 `;
