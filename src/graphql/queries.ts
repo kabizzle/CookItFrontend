@@ -1,5 +1,13 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
+export const AUTH_USER = gql`
+  query Me {
+    me {
+      id
+      username
+    }
+  }
+`
 export const ALL_CATEGORIES = gql`
   query {
     allCategories {
@@ -24,7 +32,7 @@ export const ALL_CATEGORIES = gql`
       }
     }
   }
-`
+`;
 
 export const CATEGORY = gql`
   query Query($name: ID!) {
@@ -52,10 +60,12 @@ export const CATEGORY = gql`
       }
     }
   }
-`
+`;
+// added the createdBy and id?
 export const ALL_RECIPES = gql`
   query AllRecipes {
     allRecipes {
+      id
       name
       description
       ingredients
@@ -69,9 +79,10 @@ export const ALL_RECIPES = gql`
       }
       tags
       createdOn
+      createdBy
     }
   }
-`
+`;
 
 export const GET_RECIPE = gql`
   query Recipe($recipeId: ID!) {
@@ -94,7 +105,7 @@ export const GET_RECIPE = gql`
       id
     }
   }
-`
+`;
 
 export const GET_FOLDER = gql`
   query Folder($folderId: ID!) {
@@ -107,7 +118,7 @@ export const GET_FOLDER = gql`
       userId
     }
   }
-`
+`;
 
 export const FOLDERS_BY_USER = gql`
   query FoldersByUser($userId: ID!) {
@@ -115,7 +126,7 @@ export const FOLDERS_BY_USER = gql`
       name
     }
   }
-`
+`;
 
 export const RECIPE_RATING = gql`
   query RatingsForRecipe($recipeId: ID!) {
@@ -127,7 +138,4 @@ export const RECIPE_RATING = gql`
       timestamp
     }
   }
-`
-
-
-
+`;

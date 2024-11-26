@@ -10,7 +10,6 @@ import {
 import App from './App';
 import './index.css';
 
-
 // Set up Apollo Client
 import { setContext } from '@apollo/client/link/context';
 
@@ -25,7 +24,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'https://localhost:4000/graphql',
+  uri: 'http://localhost:4000/graphql',
 });
 
 const client = new ApolloClient({

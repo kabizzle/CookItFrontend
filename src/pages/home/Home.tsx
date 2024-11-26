@@ -1,11 +1,11 @@
-import { Input } from '@/components/ui/input.tsx';
-import { Card, CardContent } from '../../components/ui/card.tsx';
-import { RecipesCarousel } from './CarouselComp.tsx';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ALL_CATEGORIES, ALL_RECIPES } from '@/graphql/queries.ts';
-import { useQuery } from '@apollo/client';
-import { ICategory } from '@/utils/types.tsx';
+import { Input } from "@/components/ui/input.tsx";
+import { Card, CardContent } from "../../components/ui/card.tsx";
+import { RecipesCarousel } from "./CarouselComp.tsx";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ALL_CATEGORIES, ALL_RECIPES } from "@/graphql/queries.ts";
+import { useQuery } from "@apollo/client";
+import { ICategory } from "@/utils/types.tsx";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,16 +13,16 @@ const Home = () => {
   const resultRecipes = useQuery(ALL_RECIPES);
   const handleCategoryClick = (categoryName: string) => {
     // Navigate to the category page dynamically based on the selected category
-    navigate(`/category/${categoryName}`);
+    navigate(`/category/${categoryName.toLowerCase()}`);
   };
-  const [searchTags, setSearchTags] = useState('');
+  const [searchTags, setSearchTags] = useState("");
   // console.log(result);
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
       const processedTags = searchTags
-        .replace(/[^a-zA-Z,]/g, '') // Removes everything except alphabetic characters and commas
-        .replace(/\s+/g, '')
-        .replace(/[, ]+/g, '%');
+        .replace(/[^a-zA-Z,]/g, "") // Removes everything except alphabetic characters and commas
+        .replace(/\s+/g, "")
+        .replace(/[, ]+/g, "%");
       if (processedTags) {
         navigate(`/search?tags=${processedTags}`);
       }
@@ -38,8 +38,8 @@ const Home = () => {
           <div
             className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 grid-flow-row gap-8 py-10 overflow-y-auto"
             style={{
-              maxHeight: '500px',
-              scrollbarWidth: 'none',
+              maxHeight: "500px",
+              scrollbarWidth: "thin",
             }}
           >
             {result.data &&
@@ -49,7 +49,7 @@ const Home = () => {
                   onClick={() => {
                     handleCategoryClick(category.name);
                   }}
-                  className="flex rounded-custom items-center justify-center aspect-square "
+                  className="flex rounded-custom items-center justify-center aspect-square cursor-pointer "
                 >
                   <CardContent className="p-6">
                     <span className="text-l font-semibold">
@@ -77,7 +77,7 @@ const Home = () => {
         </div>
 
         <h2 className="font-semibold text-2xl mb-4">RECIPES</h2>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col w-full items-center">
           <RecipesCarousel recipes={resultRecipes.data?.allRecipes} />
         </div>
       </div>
